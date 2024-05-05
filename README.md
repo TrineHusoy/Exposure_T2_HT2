@@ -6,15 +6,19 @@ The EuroMix study is a small (n=144) bionomitoring study performed as a part of 
 
 T-2 toxin (T-2) and HT2 toxin (HT-2) are mycotoxins of the type A trichothecenes. These mycotoxines are produced by fungi of the type Fusarium genera. T-2 and HT-2 are mainly reported to contaminate cereals, especially oats. In Europe, oats and oat products are noted to be the most susceptible commodities to T-2 and HT-2 contamination. Oats grown in Scandinavia have reportedly high concentrations.
 
-The exposure assessment were performed per meal for 40 participants from the EuroMix study who had high consumption of oat and/or oat containing food items.The exposure estimate was based on the individual consumption data from the weighted 24-h dietary records and concentration data of T-2 and HT-2 in grain such as oat, rye and wheat. Concentration data from whole grains were used to estimate T-2 or HT-2 concentrations in food items (e.g. bread, cereals and oat milk). These estimations were based on recipes or declaration of contents.
+The exposure assessment were performed per meal for 40 participants from the EuroMix study who had high consumption of oat and/or oat containing food items.The exposure estimate was based on the individual consumption data from the weighted 24-h dietary records and concentration data of T-2 and HT-2 in grain such as oat, rye and wheat. Concentration data was obtained from the litterature, and the concentrations found in whole grains were used to estimate T-2 or HT-2 concentrations in food items (e.g. bread, cereals and oat milk). These estimations were based on recipes or declaration of contents.
 
 Individual data from the EuroMix study cannot be openly shared, and we therefore created a Dummy file for the food consumption by randomly through around the data for each coloum in the original file (including the IDs). The calculations with these Dummy data will therefore not any longer be done for individuals with high oat consumption. 
 
 ## Files
-The R code to run the exposure estimate
+The R code to run the exposure estimate  
 [Exposure_T2_HT2_070723.Rmd](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Exposure_T2_HT2_070723.Rmd)
 
-The data file for selection of IDs from the original files
+The data file for selection of IDs from the original consumption file  
+[Selected_ID.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Selected_ID.csv)
+
+The concentration data obtained from the literature  
+[Overview_occurrence_T2HT2.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Overview_occurrence_T2HT2.csv)
 
 
 
