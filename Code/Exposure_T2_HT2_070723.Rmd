@@ -34,7 +34,7 @@ library(flextable)
 
 ```{r}
 
-HOME <- "F:/Forskningsprosjekter/PDB 1996 - EUROMIX - European t_/Forskningsfiler/TRHU/R/T2-HT2"
+HOME <- "F:/Forskningsprosjekter/PDB 1996 - EUROMIX - European t_/Forskningsfiler/TRHU/R/Github_repository/T2-HT2"
 setwd(HOME)
 
 ```
@@ -42,7 +42,7 @@ setwd(HOME)
 Create a folder with current date in the Result folder
 ```{r}
 
-newday <- file.path('F:/Forskningsprosjekter/PDB 1996 - EUROMIX - European t_/Forskningsfiler/TRHU/R/T2-HT2/Results', Sys.Date())
+newday <- file.path('F:/Forskningsprosjekter/PDB 1996 - EUROMIX - European t_/Forskningsfiler/TRHU/R/Github_repository/T2-HT2/Results', Sys.Date())
 dir.create(newday)
 
 ```
@@ -53,7 +53,7 @@ To knit the file to word or html we need to chande the code below from "./Data/.
 ```{r}
 ID <- read_csv2("./Data/Selected_ID.csv") # The IDs in EuroMix selected for the T2/HT2 project
 Consumption <- read_csv2("./Data/Food_consumption_EuroMix_meals_bothdays.csv", locale = locale(encoding = "UTF-8"))
-Occurrence_R <- read_delim("./Data/Overview_occurrence_T2HT2_Rudolf_310523.csv")
+Occurrence_R <- read_delim("./Data/Overview_occurrence_T2HT2.csv")
 ```
 
 ## To be able to read æ,ø and å run in the console the code below.
