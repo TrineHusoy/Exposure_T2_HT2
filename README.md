@@ -8,7 +8,7 @@ T-2 toxin (T-2) and HT2 toxin (HT-2) are mycotoxins of the type A trichothecenes
 
 The exposure assessment were performed per meal for 40 participants from the EuroMix study who had high consumption of oat and/or oat containing food items.The exposure estimate was based on the individual consumption data from the weighted 24-h dietary records and concentration data of T-2 and HT-2 in grain such as oat, rye and wheat. Concentration data was obtained from the litterature, and the concentrations found in whole grains were used to estimate T-2 or HT-2 concentrations in food items (e.g. bread, cereals and oat milk). These estimations were based on recipes or declaration of contents.
 
-Individual data from the EuroMix study cannot be openly shared, and we therefore created a Dummy file for the food consumption by randomly through around the data for each coloum in the original file (including the IDs). The calculations with these Dummy data will therefore not any longer be done for individuals with high oat consumption. 
+Individual data from the EuroMix study cannot be openly shared, and we therefore created a Dummy file for the food consumption. The resulting file will be a stochastic rearrangement of the data (including the ID numbers) in the original file, but all data will be maintained. The calculations with these Dummy data will therefore not any longer be done for individuals with high oat consumption. In addition the amounts will not match the right food category, and therefore the exposure from some food categories will not be reasonable. The Dummy file is only added for you to run the code.
 
 ## Files
 The R code to run the exposure estimate  
