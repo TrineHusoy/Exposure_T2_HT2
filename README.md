@@ -20,5 +20,9 @@ The data file for selection of IDs from the original consumption file
 The concentration data obtained from the literature  
 [Overview_occurrence_T2HT2.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Overview_occurrence_T2HT2.csv)
 
+The concumption Dummy data
+[Consumption_dummy.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Consumption_dummy.csv)
 
+## Exposure assesment from diet
+Establish the folders "Code", "Data" and "Results" in your directory and copy the relevant files to the appropriate folders. Open the R or Rmd code in RStudio and insert your work directory in the code. The data files will be uploaded and create a new folder under "Results" with the date of the day to store the results. 
 
