@@ -20,7 +20,7 @@ The data file for selection of IDs from the original consumption file
 The concentration data obtained from the literature  
 [Overview_occurrence_T2HT2.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Overview_occurrence_T2HT2.csv)
 
-The concumption Dummy data
+The concumption Dummy data  
 [Consumption_dummy.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Consumption_dummy.csv)
 
 ## Exposure assesment from diet
