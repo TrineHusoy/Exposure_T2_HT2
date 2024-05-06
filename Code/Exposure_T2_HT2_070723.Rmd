@@ -34,7 +34,7 @@ library(flextable)
 
 ```{r}
 
-HOME <- "F:/Forskningsprosjekter/PDB 1996 - EUROMIX - European t_/Forskningsfiler/TRHU/R/Github_repository/T2-HT2"
+HOME <- "Insert your directory"
 setwd(HOME)
 
 ```
@@ -42,7 +42,7 @@ setwd(HOME)
 Create a folder with current date in the Result folder
 ```{r}
 
-newday <- file.path('F:/Forskningsprosjekter/PDB 1996 - EUROMIX - European t_/Forskningsfiler/TRHU/R/Github_repository/T2-HT2/Results', Sys.Date())
+newday <- file.path('Your directory/Results', Sys.Date())
 dir.create(newday)
 
 ```
@@ -52,7 +52,7 @@ dir.create(newday)
 To knit the file to word or html we need to chande the code below from "./Data/......." to "../Data/........", putting in an extra dot before the /Data.
 ```{r}
 ID <- read_csv2("./Data/Selected_ID.csv") # The IDs in EuroMix selected for the T2/HT2 project
-Consumption <- read_csv2("./Data/Food_consumption_EuroMix_meals_bothdays.csv", locale = locale(encoding = "UTF-8"))
+Consumption <- read_csv2("./Data/Consumption_dummy.csv", locale = locale(encoding = "UTF-8"))
 Occurrence_R <- read_delim("./Data/Overview_occurrence_T2HT2.csv")
 ```
 
@@ -234,7 +234,7 @@ f_MC_Sim <- function(x,y){
   x$shape <- y$shape[match(x$foodcat, y$foodcat)]
   
   MC <- replicate(1000, x$Amount*
-                    rlnorm(n=148,x$Loc, x$shape), simplify = FALSE)
+                    rlnorm(n=105,x$Loc, x$shape), simplify = FALSE)
   
   df_MC <- as.data.frame(do.call(cbind, MC))
   x <- cbind(x, df_MC)
@@ -595,69 +595,6 @@ ggsave(filename=file.path(newday, "Plot_HT2_meal.jpeg"),
 
 
 ```
-
-
-# Make summary data for the manuscript
-
-```{r}
-Exposure_T2_HT2 <- Exposure_T2
-Exposure_T2_HT2[,5:1004] <- Exposure_T2[,5:1004] + Exposure_HT2[,5:1004]
-
-Exposure_T2_HT2$per1 <- ifelse(Exposure_T2_HT2$Time<1200, 1, Exposure_T2_HT2$Time)
-Exposure_T2_HT2$per2 <- ifelse(1200<=Exposure_T2_HT2$per1 & Exposure_T2_HT2$per1<1800, 2, Exposure_T2_HT2$per1)
-Exposure_T2_HT2$periode <- ifelse(1800 <= Exposure_T2_HT2$per2, 3, Exposure_T2_HT2$per2)
-
-Exposure_total <- Exposure_T2_HT2[,5:1004]
-Exposure_total$periode <- Exposure_T2_HT2$periode
-#Exposure_total$IDkode <- Exposure_T2_HT2$Idkode
-
-Exposure_total <- Exposure_total %>%  pivot_longer(!periode, names_to = "MC", values_to = "value")
-
-Sum_1 <-function(x){
-  x %>%
-    group_by(periode) %>%
-    summarise(
-      N = n(),
-      mean = mean(value, na.rm=TRUE),
-      sd=sd(value, na.rm=TRUE),
-      min=min(value, na.rm=TRUE),
-      P05=quantile(value, .05, na.rm=TRUE),
-      P50=quantile(value, .50, na.rm=TRUE),
-      P95=quantile(value, .95, na.rm=TRUE),
-      max=max(value, na.rm=TRUE)
-    )
-} 
-
-Sum_2 <-function(x){
-  x %>%
-    group_by(periode) %>%
-    exp(mean(log(value)))
-} 
-
-
-Exposure_sum <- Sum_1(Exposure_total)
-
-Exposure_sum
-
-Exposure_total <- as.data.frame(Exposure_total)
-
-Condition1 <- Exposure_total$periode == 1
-Condition2 <- Exposure_total$periode == 2
-Condition3 <- Exposure_total$periode == 3
-
-Periode1 <- Exposure_total$value[Condition1]
-Periode2 <- Exposure_total$value[Condition2]
-Periode3 <- Exposure_total$value[Condition3]                                
-
-GM1 <- exp(mean(log(Periode1))) 
-GM2 <- exp(mean(log(Periode2)))
-GM3 <- exp(mean(log(Periode3)))
-     
-GM3
-
-
-```
-
 
 
 
