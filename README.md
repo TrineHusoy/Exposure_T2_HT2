@@ -12,13 +12,13 @@ Individual data from the EuroMix study cannot be openly shared, and we therefore
 
 ## Files
 The R code to run the exposure estimate  
-[Exposure_T2_HT2_070723.Rmd](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Exposure_T2_HT2_070723.Rmd)
+[Exposure_T2_HT2_070723.Rmd](hhttps://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Exposure_T2_HT2_toGit_131224.Rmd)
 
 The data file for selection of IDs from the original consumption file  
 [Selected_ID.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Selected_ID.csv)
 
 The concentration data obtained from the literature  
-[Overview_occurrence_T2HT2.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Overview_occurrence_T2HT2.csv)
+[Overview_occurrence_T2HT2.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Overview_occurrence_T2HT2_131224.csv)
 
 The concumption Dummy data  
 [Consumption_dummy.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Consumption_dummy.csv)
