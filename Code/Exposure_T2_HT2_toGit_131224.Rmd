@@ -18,15 +18,16 @@ knitr::opts_chunk$set(
 
 # Activate packages
 ```{r}
-
+#install.packages("xfun")
 
 library(writexl)
-library(plyr)
+#library(plyr)
 library(openxlsx)
 library(tidyverse)
-library(fitdistrplus)
-library(ggridges)
+#library(fitdistrplus)
+#library(ggridges)
 library(flextable)
+#library(xfun)
 
 ```
 
@@ -34,7 +35,7 @@ library(flextable)
 
 ```{r}
 
-HOME <- "Insert your directory"
+HOME <- "C:/Users/TRHU/Documents/R_projects/T2-HT2"
 setwd(HOME)
 
 ```
@@ -42,7 +43,7 @@ setwd(HOME)
 Create a folder with current date in the Result folder
 ```{r}
 
-newday <- file.path('Your directory/Results', Sys.Date())
+newday <- file.path('C:/Users/TRHU/Documents/R_projects/T2-HT2/Results', Sys.Date())
 dir.create(newday)
 
 ```
@@ -52,8 +53,8 @@ dir.create(newday)
 To knit the file to word or html we need to chande the code below from "./Data/......." to "../Data/........", putting in an extra dot before the /Data.
 ```{r}
 ID <- read_csv2("./Data/Selected_ID.csv") # The IDs in EuroMix selected for the T2/HT2 project
-Consumption <- read_csv2("./Data/Consumption_dummy.csv", locale = locale(encoding = "UTF-8"))
-Occurrence_R <- read_delim("./Data/Overview_occurrence_T2HT2.csv")
+Consumption <- read_csv2("./Data/Food_consumption_EuroMix_meals_bothdays.csv", locale = locale(encoding = "UTF-8"))
+Occurrence_R <- read_delim("./Data/Overview_occurrence_T2HT2_131224.csv")
 ```
 
 ## To be able to read æ,ø and å run in the console the code below.
@@ -234,7 +235,7 @@ f_MC_Sim <- function(x,y){
   x$shape <- y$shape[match(x$foodcat, y$foodcat)]
   
   MC <- replicate(1000, x$Amount*
-                    rlnorm(n=105,x$Loc, x$shape), simplify = FALSE)
+                    rlnorm(n=148,x$Loc, x$shape), simplify = FALSE)
   
   df_MC <- as.data.frame(do.call(cbind, MC))
   x <- cbind(x, df_MC)
@@ -539,13 +540,18 @@ write.xlsx(Exposure_HT2,
 ## Contribution from different food categories
 
 ```{r}
+
 # T2
 Exp_T2_plot <- Exposure_T2 %>% dplyr::select(Idkode, foodcat, V1:V1000)
-Exp_T2_plot <- Exp_T2_plot %>% pivot_longer(cols = c(contains("V")), "T2")
+Exp_T2_plot <- Exp_T2_plot %>% tidyr::pivot_longer(cols = c(contains("V")), names_to = "T2",
+                                                   values_to = "value")
+
 
 # HT2
 Exp_HT2_plot <- Exposure_HT2 %>% dplyr::select(Idkode, foodcat, V1:V1000)
-Exp_HT2_plot <- Exp_HT2_plot %>% pivot_longer(cols = c(contains("V")), "HT2")
+Exp_HT2_plot <- Exp_HT2_plot %>% pivot_longer(cols = c(contains("V")), names_to = "HT2",
+                                                   values_to = "value")
+
 ```
 
 
@@ -595,7 +601,4 @@ ggsave(filename=file.path(newday, "Plot_HT2_meal.jpeg"),
 
 
 ```
-
-
-
 
