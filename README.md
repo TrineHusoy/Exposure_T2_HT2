@@ -15,7 +15,7 @@ THe document where the occurence modelling is described
 [Documentation & results.docx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/'Documentation & results.docx')
 
 The R code to run the occurance modeling  
-[Occurence data modelling.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/'Occurence data modelling.R')
+[Occurence data modelling.R](Code/Occurence data modelling.R)
 
 # Exposure to T-2 and HT-2 toxin from diet
 
