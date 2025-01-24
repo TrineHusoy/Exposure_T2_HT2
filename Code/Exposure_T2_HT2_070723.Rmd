@@ -484,51 +484,51 @@ Here we will calculate the T2 and HT2 exposure from the consumption of food that
 
 ```{r}
 # T2
-Exposure_T2 <- f_MC_Sim(Consumption, concentration_foodcat_t2)
-Exposure_T2 <- Exposure_T2 %>% dplyr::select(Idkode, Day, Time, foodcat, V1:V1000)
+Intake_T2 <- f_MC_Sim(Consumption, concentration_foodcat_t2)
+Intake_T2 <- Intake_T2 %>% dplyr::select(Idkode, Day, Time, foodcat, V1:V1000)
 
 # HT2
-Exposure_HT2 <- f_MC_Sim(Consumption, concentration_foodcat_ht2)
-Exposure_HT2 <- Exposure_HT2 %>% dplyr::select(Idkode, Day, Time, foodcat, V1:V1000)
+Intake_HT2 <- f_MC_Sim(Consumption, concentration_foodcat_ht2)
+Intake_HT2 <- Intake_HT2 %>% dplyr::select(Idkode, Day, Time, foodcat, V1:V1000)
 ```
 
 Make a summary table for the markdown document
 ```{r}
 # T2
-Exposure_T2_sum <- Exposure_T2
-Exposure_T2_sum$mean <- rowMeans(Exposure_T2_sum[,5:1004])
-Exposure_T2_sum$P95 <- apply(Exposure_T2_sum[,5:1004],1, quantile, probs = 0.95)
-Exposure_T2_sum <- Exposure_T2_sum %>% dplyr::select("Day", "Time", "foodcat", "mean", "P95")
+Intake_T2_sum <- Intake_T2
+Intake_T2_sum$mean <- rowMeans(Intake_T2_sum[,5:1004])
+Intake_T2_sum$P95 <- apply(Intake_T2_sum[,5:1004],1, quantile, probs = 0.95)
+Intake_T2_sum <- Intake_T2_sum %>% dplyr::select("Day", "Time", "foodcat", "mean", "P95")
 
 
 set_flextable_defaults(font.size = 9, theme_fun = theme_vanilla)
-Exposure_T2_sum %>% 
+Intake_T2_sum %>% 
   flextable() %>% 
   colformat_double(digits = 0)
 
 # HT2
-Exposure_HT2_sum <- Exposure_HT2
-Exposure_HT2_sum$mean <- rowMeans(Exposure_HT2_sum[,5:1004])
-Exposure_HT2_sum$P95 <- apply(Exposure_HT2_sum[,5:1004],1, quantile, probs = 0.95)
-Exposure_HT2_sum <- Exposure_HT2_sum %>% dplyr::select("Day", "Time", "foodcat", "mean", "P95")
+Intake_HT2_sum <- Intake_HT2
+Intake_HT2_sum$mean <- rowMeans(Intake_HT2_sum[,5:1004])
+Intake_HT2_sum$P95 <- apply(Intake_HT2_sum[,5:1004],1, quantile, probs = 0.95)
+Intake_HT2_sum <- Intake_HT2_sum %>% dplyr::select("Day", "Time", "foodcat", "mean", "P95")
 
 
 set_flextable_defaults(font.size = 9, theme_fun = theme_vanilla)
-Exposure_HT2_sum %>% 
+Intake_HT2_sum %>% 
   flextable() %>% 
   colformat_double(digits = 0)
 ```
 
 
-## Save the T2 and HT2 (ng) exposure file
+## Save the T2 and HT2 (ng) Intake file
 ```{r}
-write.xlsx(Exposure_T2,
-           file = file.path(newday, "Exposure_T2.xlsx"),
+write.xlsx(Intake_T2,
+           file = file.path(newday, "Intake_T2.xlsx"),
            colNames = TRUE, borders = "rows"
 )
 
-write.xlsx(Exposure_HT2,
-           file = file.path(newday, "Exposure_HT2.xlsx"),
+write.xlsx(Intake_HT2,
+           file = file.path(newday, "Intake_HT2.xlsx"),
            colNames = TRUE, borders = "rows"
 )
 ```
@@ -540,11 +540,11 @@ write.xlsx(Exposure_HT2,
 
 ```{r}
 # T2
-Exp_T2_plot <- Exposure_T2 %>% dplyr::select(Idkode, foodcat, V1:V1000)
+Exp_T2_plot <- Intake_T2 %>% dplyr::select(Idkode, foodcat, V1:V1000)
 Exp_T2_plot <- Exp_T2_plot %>% pivot_longer(cols = c(contains("V")), "T2")
 
 # HT2
-Exp_HT2_plot <- Exposure_HT2 %>% dplyr::select(Idkode, foodcat, V1:V1000)
+Exp_HT2_plot <- Intake_HT2 %>% dplyr::select(Idkode, foodcat, V1:V1000)
 Exp_HT2_plot <- Exp_HT2_plot %>% pivot_longer(cols = c(contains("V")), "HT2")
 ```
 
