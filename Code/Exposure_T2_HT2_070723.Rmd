@@ -53,7 +53,7 @@ To knit the file to word or html we need to chande the code below from "./Data/.
 ```{r}
 ID <- read_csv2("./Data/Selected_ID.csv") # The IDs in EuroMix selected for the T2/HT2 project
 Consumption <- read_csv2("./Data/Consumption_dummy.csv", locale = locale(encoding = "UTF-8"))
-Occurrence_R <- read_delim("./Data/Overview_occurrence_T2HT2.csv")
+Occurrence_R <- read_delim("./Data/Results_occurance_T2HT2.csv")
 ```
 
 ## To be able to read æ,ø and å run in the console the code below.
