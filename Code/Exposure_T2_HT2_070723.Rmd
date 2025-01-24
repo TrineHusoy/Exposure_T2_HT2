@@ -1,0 +1,601 @@
+---
+title: "Exposure_T2_HT2_Euromix"
+author: "Trine Husøy"
+date: "2023-06-20"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+---
+
+Define knitr chunk options
+
+For more info in Markdown and knitr chunk options see [rmarkdown-cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html)
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(
+  comment = "#>", echo = TRUE, warning = FALSE, error = FALSE, message = FALSE, fig.width = 6)
+```
+
+# Activate packages
+```{r}
+
+
+library(writexl)
+library(plyr)
+library(openxlsx)
+library(tidyverse)
+library(fitdistrplus)
+library(ggridges)
+library(flextable)
+
+```
+
+# Get work directory and organise results
+
+```{r}
+
+HOME <- "Insert your directory"
+setwd(HOME)
+
+```
+
+Create a folder with current date in the Result folder
+```{r}
+
+newday <- file.path('Your directory/Results', Sys.Date())
+dir.create(newday)
+
+```
+
+# Read in data
+
+To knit the file to word or html we need to chande the code below from "./Data/......." to "../Data/........", putting in an extra dot before the /Data.
+```{r}
+ID <- read_csv2("./Data/Selected_ID.csv") # The IDs in EuroMix selected for the T2/HT2 project
+Consumption <- read_csv2("./Data/Consumption_dummy.csv", locale = locale(encoding = "UTF-8"))
+Occurrence_R <- read_delim("./Data/Overview_occurrence_T2HT2.csv")
+```
+
+## To be able to read æ,ø and å run in the console the code below.
+
+ Then it will be possible to search for words with scandinavian letters
+```{r}
+##### IMPORTANT
+Sys.setlocale(locale='no_NB.utf8')
+```
+
+
+# Functions
+
+This is a function whith make R recognise scandinavian letters æ, ø and å. Makes it possible to search in the norwegian food categories
+```{r}
+# Create a function to convert all columns to UTF-8 encoding,
+# dropping any characters that can't be converted.
+f_df_convert_utf8 <- function(df_data){
+
+  # Convert all character columns to UTF-8
+  # Source: https://stackoverflow.com/questions/54633054/dbidbwritetable-invalid-multibyte-string
+  df_data[,sapply(df_data,is.character)] <- sapply(
+    df_data[,sapply(df_data,is.character)],
+    iconv,"WINDOWS-1252","UTF-8",sub = "")
+  
+  return(df_data)
+}
+
+```
+
+Calculate the location (Loc) and scale (shape) parameters for a log normal distribution
+```{r}
+
+f_lognorm_Loc <- function(x){
+  log(
+    x$mean^2/sqrt(x$sd^2+x$mean^2)
+  )
+  
+}
+
+
+f_lognorm_shape <- function(x){
+  sqrt(
+    log(
+      1 + x$sd^2/x$mean^2
+    )
+  )
+}
+```
+
+The function gives N, mean and sd for a numeric vector
+```{r}
+f_summ <-function(x){
+  x %>%
+  dplyr::summarise(
+    N = n(),
+    mean = mean(value, na.rm=TRUE),
+    sd=sd(value, na.rm=TRUE)
+  )
+}  
+```
+
+This function sample the concentrations from a log normal distribution of T2 or HT2 toxin measured in grain for each publication equal to the number of analyses that has been done. The sampled concentrations for each grain is added and summary data is calculated as a basis for a overall log normal distribution of concentrations of T2 and HT2 toxin in the grain. The overall conc distribution is used for "baking" of bread, fine bakery and crisp bread.
+```{r}
+
+
+#-----------------------------------------------------------------------------------
+# never introduce a local variable with the same name as an input variable
+# just define x as list with length equal to nrow(y)
+# combine all elements of list with unlist(.)
+# carefully check your indexing; R is very sloppy in this respect
+#-----------------------------------------------------------------------------------
+
+
+f_conc_grain <- function(y){
+   x <- vector("list", length = nrow(y))
+  for(i in 1:nrow(y)){
+    set.seed(123)
+    x[[i]] <- rlnorm(n=y$sample_size[i], y$mu[i], y$se[i])
+  }
+  x <- unlist(x)
+  x <- list(name = 1:length(x), value = x)
+  x <- as_tibble(x)
+  x <- f_summ(x) # make summary data
+  x$Loc <- f_lognorm_Loc(x) # Location parameter for the log normal distribution
+  x$shape <- f_lognorm_shape(x) # Shape parameter for the log normal distribution
+  return(x)
+}
+
+```
+
+
+## Functions for calculating T2/HT2 concentrations in bakery products, oat bread and cereals
+Taking the receipts from the Norwegian "matvaretabell" or from the Norwegian dietary calculation system "KBS". Since the EuroMix study is registered in KBS and the consumption of different food are calculated in KBS, I have selected the receipts form KBS.
+
+Bread with 50-70% grain contents for 100g bread:
+37.3 g ground wheat 
+37.3 g ground whole wheat
+37.3 g water
+1.3 g yeast
+1 g salt
+
+Oat bread:
+38.1 g "ground" wheat 
+38.1 g oat grain
+38.1 g water
+1.1 g yeast
+1.5 g salt
+
+
+```{r}
+f_MC_bakery <- function(y){ # T2/HT2 (ng) concentration in g bakery
+  set.seed(123)
+  MC <- y$N
+  x <- array(dim = c(nrow(y),1,MC))
+  for (u in 1:MC){
+    for(i in 1:nrow(y)){
+      x[i,1,u] <- (0.746 * rlnorm(n=1,y$Loc[i], y$shape[i])) # Uses T2/HT2 cons in whole grain also for ground wheat due to lack of data
+  }
+ }
+  return(x)
+}
+
+f_MC_oatbread <- function(y, z){ # T2/HT2 (ng) concentration in g oatbread
+  set.seed(123)
+  MC <- y$N
+  x <- array(dim = c(nrow(y),1,MC))
+  for (u in 1:MC){
+    for(i in 1:nrow(y)){
+      x[i,1,u] <- (0.381 * rlnorm(n=1,y$Loc[i], y$shape[i]) + 0.381 * rlnorm(n=1,z$Loc[i], z$shape[i])) # Uses T2/HT2 cons in whole grain also for ground wheat due to lack of data
+  }
+ }
+  return(x)
+}
+
+```
+
+For cereals the declaration of content shows that oat is on the top three ingredients that is listed, which means that oat is a major ingredient in cereals sold in Norway. For the cereal with fruit (AXA), oat were listed before fruit(25%), which means that the content of oat is higher than 25%. I therefore assume that the oat content is 30% in all cereals eaten in Euromix. Since the cereals also contain wheat grain and rye, I assume that 60% of the cereal is wheat and rye
+
+```{r}
+f_MC_cereal <- function(y, z){ # T2/HT2 (ng) concentration in g cereal, y is cons in oat, and z is conc in wheat_rye
+  set.seed(123)
+  MC <- y$N
+  x <- array(dim = c(nrow(y),1,MC))
+  for (u in 1:MC){
+    for(i in 1:nrow(y)){
+      x[i,1,u] <- (0.3 * rlnorm(n=1,y$Loc[i], y$shape[i]) + 0.6 * rlnorm(n=1,z$Loc[i], z$shape[i])) # Uses T2/HT2 cons in whole grain also for ground wheat due to lack of data
+  }
+ }
+  return(x)
+}
+
+```
+
+For the oatmilk we have no defined receipt how much oat per ml water is used in commercial products, but from receipt online about 50-200 g out is used to 1000ml water. This results in 800 ml drink. This is in line with what is reported in UK with 10-12 g oat per 100 ml water. I choose to use 100 g per 1000 ml water, which results in 800 ml, which amount to approximately 10% oat. 
+
+```{r}
+f_MC_oatmilk <- function(y){ # T2/HT2 (ng) concentration in g oatmilk, y is cons in oat
+  set.seed(123)
+  MC <- y$N
+  x <- array(dim = c(nrow(y),1,MC))
+  for (u in 1:MC){
+    for(i in 1:nrow(y)){
+      x[i,1,u] <- (0.1 * rlnorm(n=1,y$Loc[i], y$shape[i])) # Uses T2/HT2 cons in whole grain also for ground wheat due to lack of data
+  }
+ }
+  return(x)
+}
+
+```
+
+## Function for doing the Monte Carlo simmulation 
+
+
+```{r}
+f_MC_Sim <- function(x,y){
+  x$Loc <- y$Loc[match(x$foodcat, y$foodcat)] # Identify the right Loc and shape parameter for the food category
+  x$shape <- y$shape[match(x$foodcat, y$foodcat)]
+  
+  MC <- replicate(1000, x$Amount*
+                    rlnorm(n=105,x$Loc, x$shape), simplify = FALSE)
+  
+  df_MC <- as.data.frame(do.call(cbind, MC))
+  x <- cbind(x, df_MC)
+  
+  return(x)
+  }
+
+```
+
+
+# Cleaning of data
+
+Separate IDs for day 1 and day 2, to be used for selection of IDs of the consumption file
+```{r}
+ID_day1 <- ID[ID$Day==1,]
+ID_day2 <- ID[ID$Day==2,]
+
+```
+
+
+## Clean consumption data
+```{r}
+
+# Use the function f_df_convert_utf8 to be able to read Norwegian letters, æ, ø, and å
+Consumption <- f_df_convert_utf8(Consumption)
+Consumption <- Consumption %>% dplyr::select(-Food_nr)
+
+Consumption_day1 <- Consumption[Consumption$Day==1,] # Separate consumption for day 1 and day 2
+Consumption_day2 <- Consumption[Consumption$Day==2,]
+
+# Select the IDs included in the T2/HT2 project
+
+Consumption_day1 <- Consumption_day1[Consumption_day1$Idkode %in% ID_day1$IDkode,]
+Consumption_day2 <- Consumption_day2[Consumption_day2$Idkode %in% ID_day2$IDkode,]
+
+Consumption_T2 <- rbind(Consumption_day1, Consumption_day2)
+
+```
+
+### Select the consumption relevant for exposure to T2/HT2 toxin
+
+This is dependent on the concentration file on T2/HT2 toxin and the food categories represented there. We will select these food categories from the consumption file, and group them into broader consumption goups.
+
+```{r}
+
+cereals <- c("(?i)Havrefras", "(?i)Crusli", "(?i)mysli", "(?i)frokost", "(?i)cornflakes", "(?i)4-korn") # I decided to not include "frø" (seeds)
+cereal <- Consumption_T2[str_detect(Consumption_T2$Name, paste(cereals, collapse = "|")),]
+Consumption_T2 <- Consumption_T2[!str_detect(Consumption_T2$Name, paste(cereals, collapse = "|")),]
+cereal$foodcat <- "cereal"
+
+oat <- Consumption_T2[str_detect(Consumption_T2$Name, "(?i)havregryn"),]
+Consumption_T2 <- Consumption_T2[!str_detect(Consumption_T2$Name, "(?i)havregryn"),]
+oat$foodcat <- "oat"
+Consumption <- rbind(cereal, oat)
+
+oat <- Consumption_T2[str_detect(Consumption_T2$Name, "(?i)havr"),] # Extract food with oat
+Consumption_T2 <- Consumption_T2[!str_detect(Consumption_T2$Name, "(?i)havr"),]
+oatbread <- oat[str_detect(oat$Name, "(?i)brød"),] # Extract the bread with oat
+oatbread$foodcat <- "oatbread"
+Consumption <- rbind(Consumption, oatbread)
+oat <- oat[!str_detect(oat$Name, "(?i)brød"),]
+
+oatmilk <- oat[str_detect(oat$Name, "(?i)melk"),]
+oatmilk$foodcat <- "oatmilk"
+Consumption <- rbind(Consumption, oatmilk)
+
+bakery_fine <- c("(?i)rundst", "(?i)boll", "(?i)tortilla", "(?i)hamburgerbrød", "(?i)polarbrød", "(?i)brød", "(?i)knekkebr", "(?i)rug sammalt", "(?i)hvete")
+bakery <- Consumption_T2[str_detect(Consumption_T2$Name, paste(bakery_fine, collapse = "|")),]
+Consumption_T2 <- Consumption_T2[!str_detect(Consumption_T2$Name, paste(bakery_fine, collapse = "|")),]
+bakery$foodcat <- "bakery"
+Consumption <- rbind(Consumption, bakery)
+
+Consumption <- Consumption %>% arrange(Idkode, Meal) # arrange the file after ID and meals
+Consumption$Amount <- as.numeric(Consumption$Amount)
+```
+
+
+## Clean Occurrence data
+
+The concentration of T2 and HT2 in grain's need to be sorted according to level of T2 and HT2, and the summary data are converted to individual concentration data by sampling from a log normal distribution defined by the summary data in each paper. The number of individual data sampled is equal to the number of analyses provided by the paper. 
+It was decided to merge the concentration data on wheat and rye, because they are in the same range and they gave the same concentration of T2 toxin after calculation of T2 in bakery products. 
+This leave us with two concentration distributions, one for wheat and rye combined ("wheat_rye") and one for oat ("oat"). This is based on the samples individual concentration from each paper, from here the location parameter (Loc = mu) and shape parameter (shape=sigma) are calculated. These define the new long normal distribution for all concentration data. 
+
+```{r}
+# T2 conc in grain
+conc_t2_raw <- Occurrence_R[Occurrence_R$type == "T-2",] # Select the rows with T2 conc
+conc_t2_raw <- conc_t2_raw[!is.na(conc_t2_raw$raw),] # Delete the rows with NAs
+conc_t2_raw <- conc_t2_raw %>% dplyr::select("type", "raw", "sample_size", "mu", "se", "ref")
+
+conc_t2_oat <- conc_t2_raw[conc_t2_raw$raw == "Oats",]
+conc_t2_wheat <- conc_t2_raw[conc_t2_raw$raw == "Wheat",]
+conc_t2_rye <- conc_t2_raw[conc_t2_raw$raw == "Rye",]
+conc_t2_wheat_rye <- rbind(conc_t2_wheat, conc_t2_rye)
+
+# HT2 conc in grain
+conc_ht2_raw <- Occurrence_R[Occurrence_R$type == "HT-2",] # Select the rows with HT2 conc
+conc_ht2_raw <- conc_ht2_raw[!is.na(conc_ht2_raw$raw),] # Delete the rows with NAs
+conc_ht2_raw <- conc_ht2_raw %>% dplyr::select("type", "raw", "sample_size", "mu", "se", "ref")
+
+conc_ht2_oat <- conc_ht2_raw[conc_ht2_raw$raw == "Oats",]
+conc_ht2_wheat <- conc_ht2_raw[conc_ht2_raw$raw == "Wheat",]
+conc_ht2_rye <- conc_ht2_raw[conc_ht2_raw$raw == "Rye",]
+conc_ht2_wheat_rye <- rbind(conc_ht2_wheat, conc_ht2_rye)
+
+```
+
+
+### Make one concentration distribution and summary data for each grain type
+
+```{r}
+# T2 
+conc_t2_wheatrye_sum <- f_conc_grain(conc_t2_wheat)
+conc_t2_oat_sum <- f_conc_grain(conc_t2_oat)
+conc_t2_oat_sum$foodcat <- "oat"
+
+# HT2
+conc_ht2_wheatrye_sum <- f_conc_grain(conc_ht2_wheat)
+conc_ht2_oat_sum <- f_conc_grain(conc_ht2_oat)
+conc_ht2_oat_sum$foodcat <- "oat"
+```
+
+
+# Convert occurrence in grain to concentrations in food
+
+## "Baking" of bakery products
+
+Taking the receipts from the Norwegian "matvaretabell" or from the Norwegian dietary calculation system "KBS". Since the EuroMix study is registered in KBS and the consumption of different food are calculated in KBS, I have selected the receipts form KBS.
+
+We only use the information of flour/grain to calculate the T2/HT2 content in ng/g bakery products. Since the concentration of T2 is very similar in wheat and rye, all bakery products without oat is collected in the broad food category "bakery products", which includes fine bakery products such as bread (not oatbread), buns and rolls, crispbread. 
+I assume that ground whole wheat contains the same concentration as wheat grain, and that this can be exchanged with oat grain to "bake" the oat bread.
+The concentration of T2/HT2 in the grain will be sampled from a log normal distribution based on the summary data from a combination of all publications in the occurrence database, and the number of sampled T2/HT2 concentration in the bkary products will equal the number on analyses reported in these publications. 
+
+The summary T2/HT2 concentration files for each food category will be merged into one data frame
+
+### Bread and fine bakery with only wheat and rye
+
+
+
+```{r}
+# T2
+bakery_t2 <- f_MC_bakery(conc_t2_wheatrye_sum)
+bakery_t2 <- as_tibble(bakery_t2[1,1,])
+conc_t2_bakery_sum <- f_summ(bakery_t2)
+conc_t2_bakery_sum$Loc <- f_lognorm_Loc(conc_t2_bakery_sum)
+conc_t2_bakery_sum$shape <- f_lognorm_shape(conc_t2_bakery_sum)
+conc_t2_bakery_sum$foodcat <- "bakery"
+
+# HT2
+bakery_ht2 <- f_MC_bakery(conc_ht2_wheatrye_sum)
+bakery_ht2 <- as_tibble(bakery_ht2[1,1,])
+conc_ht2_bakery_sum <- f_summ(bakery_ht2)
+conc_ht2_bakery_sum$Loc <- f_lognorm_Loc(conc_ht2_bakery_sum)
+conc_ht2_bakery_sum$shape <- f_lognorm_shape(conc_ht2_bakery_sum)
+conc_ht2_bakery_sum$foodcat <- "bakery"
+
+```
+
+
+### Oat bread
+
+```{r}
+# T2
+oatbread_t2 <- f_MC_oatbread(conc_t2_wheatrye_sum, conc_t2_oat_sum)
+oatbread_t2 <- as_tibble(oatbread_t2[1,1,])
+conc_t2_oatbread_sum <- f_summ(oatbread_t2)
+conc_t2_oatbread_sum$Loc <- f_lognorm_Loc(conc_t2_oatbread_sum)
+conc_t2_oatbread_sum$shape <- f_lognorm_shape(conc_t2_oatbread_sum)
+conc_t2_oatbread_sum$foodcat <- "oatbread"
+
+# HT2
+oatbread_ht2 <- f_MC_oatbread(conc_ht2_wheatrye_sum, conc_ht2_oat_sum)
+oatbread_ht2 <- as_tibble(oatbread_ht2[1,1,])
+conc_ht2_oatbread_sum <- f_summ(oatbread_ht2)
+conc_ht2_oatbread_sum$Loc <- f_lognorm_Loc(conc_ht2_oatbread_sum)
+conc_ht2_oatbread_sum$shape <- f_lognorm_shape(conc_ht2_oatbread_sum)
+conc_ht2_oatbread_sum$foodcat <- "oatbread"
+
+
+```
+
+### Cereals
+
+```{r}
+# T2
+cereal_t2 <- f_MC_cereal(conc_t2_oat_sum, conc_t2_wheatrye_sum)
+cereal_t2 <- as_tibble(cereal_t2[1,1,])
+conc_t2_cereal_sum <- f_summ(cereal_t2)
+conc_t2_cereal_sum$Loc <- f_lognorm_Loc(conc_t2_cereal_sum)
+conc_t2_cereal_sum$shape <- f_lognorm_shape(conc_t2_cereal_sum)
+conc_t2_cereal_sum$foodcat <- "cereal"
+
+# HT2
+cereal_ht2 <- f_MC_cereal(conc_ht2_oat_sum, conc_ht2_wheatrye_sum)
+cereal_ht2 <- as_tibble(cereal_ht2[1,1,])
+conc_ht2_cereal_sum <- f_summ(cereal_ht2)
+conc_ht2_cereal_sum$Loc <- f_lognorm_Loc(conc_ht2_cereal_sum)
+conc_ht2_cereal_sum$shape <- f_lognorm_shape(conc_ht2_cereal_sum)
+conc_ht2_cereal_sum$foodcat <- "cereal"
+
+
+
+```
+
+### Oatmilk
+
+```{r}
+# T2
+oatmilk_t2 <- f_MC_oatmilk( conc_t2_oat_sum)
+oatmilk_t2 <- as_tibble(oatmilk_t2[1,1,])
+conc_t2_oatmilk_sum <- f_summ(oatmilk_t2)
+conc_t2_oatmilk_sum$Loc <- f_lognorm_Loc(conc_t2_oatmilk_sum)
+conc_t2_oatmilk_sum$shape <- f_lognorm_shape(conc_t2_oatmilk_sum)
+conc_t2_oatmilk_sum$foodcat <- "oatmilk"
+
+# HT2
+oatmilk_ht2 <- f_MC_oatmilk(conc_ht2_oat_sum)
+oatmilk_ht2 <- as_tibble(oatmilk_ht2[1,1,])
+conc_ht2_oatmilk_sum <- f_summ(oatmilk_ht2)
+conc_ht2_oatmilk_sum$Loc <- f_lognorm_Loc(conc_ht2_oatmilk_sum)
+conc_ht2_oatmilk_sum$shape <- f_lognorm_shape(conc_ht2_oatmilk_sum)
+conc_ht2_oatmilk_sum$foodcat <- "oatmilk"
+
+```
+
+
+### Merge the concentration datasets
+
+```{r}
+# T2
+concentration_foodcat_t2 <- rbind(conc_t2_oat_sum, conc_t2_bakery_sum)
+concentration_foodcat_t2 <- rbind(concentration_foodcat_t2, conc_t2_oatbread_sum)
+concentration_foodcat_t2 <- rbind(concentration_foodcat_t2, conc_t2_cereal_sum)
+concentration_foodcat_t2 <- rbind(concentration_foodcat_t2, conc_t2_oatmilk_sum)
+
+# HT2
+concentration_foodcat_ht2 <- rbind(conc_ht2_oat_sum, conc_ht2_bakery_sum)
+concentration_foodcat_ht2 <- rbind(concentration_foodcat_ht2, conc_ht2_oatbread_sum)
+concentration_foodcat_ht2 <- rbind(concentration_foodcat_ht2, conc_ht2_cereal_sum)
+concentration_foodcat_ht2 <- rbind(concentration_foodcat_ht2, conc_ht2_oatmilk_sum)
+
+```
+
+
+# Calulate the T2/HT2 exposure
+
+Here we will calculate the T2 and HT2 exposure from the consumption of food that can contain toxin. This will be done probabilistic by multiplying the gram eaten food from EuroMix in the food consumption file with Monte Carlo simulation of the T2/HT2 concentration in the different food categories with 1000 iterations. This will be done separately for all meals that contains T2/HT2 toxin for per individual.
+
+```{r}
+# T2
+Exposure_T2 <- f_MC_Sim(Consumption, concentration_foodcat_t2)
+Exposure_T2 <- Exposure_T2 %>% dplyr::select(Idkode, Day, Time, foodcat, V1:V1000)
+
+# HT2
+Exposure_HT2 <- f_MC_Sim(Consumption, concentration_foodcat_ht2)
+Exposure_HT2 <- Exposure_HT2 %>% dplyr::select(Idkode, Day, Time, foodcat, V1:V1000)
+```
+
+Make a summary table for the markdown document
+```{r}
+# T2
+Exposure_T2_sum <- Exposure_T2
+Exposure_T2_sum$mean <- rowMeans(Exposure_T2_sum[,5:1004])
+Exposure_T2_sum$P95 <- apply(Exposure_T2_sum[,5:1004],1, quantile, probs = 0.95)
+Exposure_T2_sum <- Exposure_T2_sum %>% dplyr::select("Day", "Time", "foodcat", "mean", "P95")
+
+
+set_flextable_defaults(font.size = 9, theme_fun = theme_vanilla)
+Exposure_T2_sum %>% 
+  flextable() %>% 
+  colformat_double(digits = 0)
+
+# HT2
+Exposure_HT2_sum <- Exposure_HT2
+Exposure_HT2_sum$mean <- rowMeans(Exposure_HT2_sum[,5:1004])
+Exposure_HT2_sum$P95 <- apply(Exposure_HT2_sum[,5:1004],1, quantile, probs = 0.95)
+Exposure_HT2_sum <- Exposure_HT2_sum %>% dplyr::select("Day", "Time", "foodcat", "mean", "P95")
+
+
+set_flextable_defaults(font.size = 9, theme_fun = theme_vanilla)
+Exposure_HT2_sum %>% 
+  flextable() %>% 
+  colformat_double(digits = 0)
+```
+
+
+## Save the T2 and HT2 (ng) exposure file
+```{r}
+write.xlsx(Exposure_T2,
+           file = file.path(newday, "Exposure_T2.xlsx"),
+           colNames = TRUE, borders = "rows"
+)
+
+write.xlsx(Exposure_HT2,
+           file = file.path(newday, "Exposure_HT2.xlsx"),
+           colNames = TRUE, borders = "rows"
+)
+```
+
+
+# Plots
+
+## Contribution from different food categories
+
+```{r}
+# T2
+Exp_T2_plot <- Exposure_T2 %>% dplyr::select(Idkode, foodcat, V1:V1000)
+Exp_T2_plot <- Exp_T2_plot %>% pivot_longer(cols = c(contains("V")), "T2")
+
+# HT2
+Exp_HT2_plot <- Exposure_HT2 %>% dplyr::select(Idkode, foodcat, V1:V1000)
+Exp_HT2_plot <- Exp_HT2_plot %>% pivot_longer(cols = c(contains("V")), "HT2")
+```
+
+
+```{r}
+
+# T2
+Plot_T2_meal <- ggplot(data = Exp_T2_plot, aes(y=value, x=foodcat)) +
+  geom_boxplot(fill="grey")+
+  theme_minimal()+
+  scale_y_log10(limits=c(0.5,100000), labels = scales::comma)+
+  theme(axis.text.x = element_text(angle = 90, size = 20), axis.title = element_text(size = 24),
+        axis.text.y = element_text(size = 20),legend.position= "none")+
+  xlab("Food category")+
+  ylab("T2 per meal (ng)")
+  #annotate("text", x=9, y=40, label="Diary", size=9)
+
+Plot_T2_meal
+
+
+ggsave(filename=file.path(newday, "Plot_T2_meal.jpeg"),
+       device = NULL,
+       width=NA,
+       height=NA,
+       units="mm")
+
+# HT2
+Plot_HT2_meal <- ggplot(data = Exp_HT2_plot, aes(y=value, x=foodcat)) +
+  geom_boxplot(fill="grey")+
+  theme_minimal()+
+  scale_y_log10(limits=c(0.5,100000), labels = scales::comma)+
+  theme(axis.text.x = element_text(angle = 90, size = 20), axis.title = element_text(size = 24),
+        axis.text.y = element_text(size = 20),legend.position= "none")+
+  xlab("Food category")+
+  ylab("HT2 per meal (ng)")
+  #annotate("text", x=9, y=40, label="Diary", size=9)
+
+Plot_HT2_meal
+
+
+ggsave(filename=file.path(newday, "Plot_HT2_meal.jpeg"),
+       device = NULL,
+       width=NA,
+       height=NA,
+       units="mm")
+
+
+
+
+```
+
+
+
+
