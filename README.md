@@ -51,7 +51,14 @@ Establish the folders "Code", "Data" and "Results" in your directory and copy th
 
 # Statistical modeling (Rudolf)
 
-A statistical model was developed to describe the relationship between daily intake and excretion of T-2 and HT-2 over time. The model can be interpreted as a compartmental model with transition rates. The input data for the model included urinary concentration data and dietary exposure estimates. The urinary concentration data were assumed to be normally distributed.
+A statistical model was developed to describe the relationship between daily intake and excretion of T-2 and HT-2 over time. The model can be interpreted as a compartmental model with transition rates. The input data for the model included urinary concentration data and dietary exposure estimates. The urinary concentration data were assumed to be normally distributed. Youcan read more about the methods in "Exploring the Relationship between Daily Intake and Renal Excretion of the Mycotoxins T-2 and HT-2 Toxin in Humans".
+
+## Files
+
+The R code for the statistical modeling
+[Statistical model.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Statistical%20model.R)
+
+
 
 
 
