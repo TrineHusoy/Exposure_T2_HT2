@@ -51,7 +51,8 @@ Establish the folders "Code", "Data" and "Results" in your directory and copy th
 
 # Statistical modeling (Rudolf)
 
-A statistical model was developed to describe the relationship between daily intake and excretion of T-2 and HT-2 over time. The model can be interpreted as a compartmental model with transition rates. The input data for the model included urinary concentration data and dietary exposure estimates. The urinary concentration data were assumed to be normally distributed. Youcan read more about the methods in "Exploring the Relationship between Daily Intake and Renal Excretion of the Mycotoxins T-2 and HT-2 Toxin in Humans".
+A statistical model was developed to describe the relationship between daily intake and excretion of T-2 and HT-2 over time. The model can be interpreted as a compartmental model with transition rates. The input data for the model included urinary concentration data and dietary exposure estimates. The urinary concentration data were assumed to be normally distributed. Youcan read more about the methods in "Exploring the Relationship between Daily Intake and Renal Excretion of the Mycotoxins T-2 and HT-2 Toxin in Humans".  
+Individual data from the EuroMix study cannot be openly shared, and we therefore used the intake data calculated from the Dummy conaumption data. These can be used to try the code, but will not give the same results as published in the paper. Also the concentration data in urine are dummy data, and threfore will not match for the individuals.
 
 ## Files
 
