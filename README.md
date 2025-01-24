@@ -12,10 +12,18 @@ Distributional characteristics of T2/HT2-concentrations in food products are ava
 ## Files
 
 THe document where the occurence modelling is described  
-[Documentation & results.docx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/'Documentation & results.docx')
+[Documentation & results.docx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Documentation%20%26%20results.docx)
 
 The R code to run the occurance modeling  
 [Occurence data modelling.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Occurence%20data%20modelling.R)
+
+The occurrence data from literature as input to the occurence modelling  
+[Occurrence data.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Occurrence%20data.xlsx)
+[Overview occurrence T2HT2.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Overview%20occurrence%20T2HT2.xlsx)
+
+The output from the occurance modelling should be like this file and this is also an input to the exposure modelling
+[Results_occurance_T2HT2.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Results_occurance_T2HT2.csv)
+
 
 # Exposure to T-2 and HT-2 toxin from diet
 
@@ -39,4 +47,11 @@ The concumption Dummy data
 
 ## Exposure assesment from diet
 Establish the folders "Code", "Data" and "Results" in your directory and copy the relevant files to the appropriate folders. Open the R or Rmd code in RStudio and insert your work directory in the code. The data files will be uploaded and create a new folder under "Results" with the date of the day to store the results. 
+
+
+# Statistical modeling (Rudolf)
+
+A statistical model was developed to describe the relationship between daily intake and excretion of T-2 and HT-2 over time. The model can be interpreted as a compartmental model with transition rates. The input data for the model included urinary concentration data and dietary exposure estimates. The urinary concentration data were assumed to be normally distributed.
+
+
 
