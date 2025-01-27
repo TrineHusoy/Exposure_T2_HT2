@@ -52,12 +52,23 @@ Establish the folders "Code", "Data" and "Results" in your directory and copy th
 # Statistical modeling (Rudolf)
 
 A statistical model was developed to describe the relationship between daily intake and excretion of T-2 and HT-2 over time. The model can be interpreted as a compartmental model with transition rates. The input data for the model included urinary concentration data and dietary exposure estimates. The urinary concentration data were assumed to be normally distributed. Youcan read more about the methods in "Exploring the Relationship between Daily Intake and Renal Excretion of the Mycotoxins T-2 and HT-2 Toxin in Humans".  
-Individual data from the EuroMix study cannot be openly shared, and we therefore used the intake data calculated from the Dummy conaumption data. These can be used to try the code, but will not give the same results as published in the paper. Also the concentration data in urine are dummy data, and threfore will not match for the individuals.
+Individual data from the EuroMix study cannot be openly shared, and we therefore have made dummy data for you to test the code. All the data files below (intake and urinary data) is therfore dummy data. 
 
 ## Files
 
-The R code for the statistical modeling
+The R code for the statistical modeling  
 [Statistical model.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Statistical%20model.R)
+
+Intake data files for the statistical modeling  
+[IntakeHT2firstday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeHT2firstday.xlsx)
+[IntakeHT2otherday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeHT2otherday.xlsx)
+[IntakeT2firstday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeT2firstday.xlsx)
+[IntakeT2otherday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeT2otherday.xlsx)
+
+Urinary data for statistical modelling
+[Urinaryvolumes.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Urinaryvolumes.csv)
+[Urinaryconcentrations.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Urinaryconcentrations.xlsx)
+
 
 
 
