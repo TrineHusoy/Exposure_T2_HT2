@@ -1,4 +1,4 @@
-type;raw;processed;sample size;method;mu;se;mu_se;se_se;mu_orig;sig_orig;poscase_dat;poscase_est;meanlevel_dat;meanlevel_est;meanlevelpos_dat;meanlevelpos_est;medlevel_dat;medlevel_est;ref
+type;raw;processed;sample_size;method;mu;se;mu_se;se_se;mu_orig;sig_orig;poscase_dat;poscase_est;meanlevel_dat;meanlevel_est;meanlevelpos_dat;meanlevelpos_est;medlevel_dat;medlevel_est;ref
 T-2;Wheat;NA;181;16;1.79;0.2;0.59976642;32.47350045;6.12;1.24;0;0;NA;0;NA;0;NA;0;Babic et al., 2021
 HT-2;Wheat;NA;181;16;1.79;0.2;0.59976642;32.47350045;6.12;1.24;0;0;NA;0;NA;0;NA;0;Babic et al., 2021
 T-2;Barley;NA;107;16;1.79;0.21;0.29486572;22.52991334;6.13;1.3;0;0;NA;0;NA;0;NA;0;Babic et al., 2021
