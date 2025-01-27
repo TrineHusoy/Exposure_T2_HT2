@@ -18,7 +18,7 @@ The R code to run the occurance modeling
 [Occurence data modelling.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Occurence%20data%20modelling.R)
 
 The occurrence data from literature as input to the occurence modelling  
-[Occurrence data.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Occurrence%20data.xlsx)
+[Occurrence data.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Occurrence%20data.xlsx)  
 [Overview occurrence T2HT2.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Overview%20occurrence%20T2HT2.xlsx)
 
 The output from the occurance modelling should be like this file and this is also an input to the exposure modelling
