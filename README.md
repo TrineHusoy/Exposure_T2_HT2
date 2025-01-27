@@ -60,14 +60,14 @@ The R code for the statistical modeling
 [Statistical model.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Statistical%20model.R)
 
 Intake data files for the statistical modeling  
-[IntakeHT2firstday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeHT2firstday.xlsx)
-[IntakeHT2otherday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeHT2otherday.xlsx)
-[IntakeT2firstday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeT2firstday.xlsx)
-[IntakeT2otherday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeT2otherday.xlsx)
+[IntakeHT2firstday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeHT2firstday.xlsx)  
+[IntakeHT2otherday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeHT2otherday.xlsx)  
+[IntakeT2firstday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeT2firstday.xlsx)  
+[IntakeT2otherday.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/IntakeT2otherday.xlsx)  
 
-Urinary data for statistical modelling
-[Urinaryvolumes.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Urinaryvolumes.csv)
-[Urinaryconcentrations.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Urinaryconcentrations.xlsx)
+Urinary data for statistical modelling  
+[Urinaryvolumes.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Urinaryvolumes.csv)  
+[Urinaryconcentrations.xlsx](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/Urinaryconcentrations.xlsx)  
 
 
 
