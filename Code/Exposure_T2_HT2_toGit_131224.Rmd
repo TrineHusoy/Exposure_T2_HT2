@@ -31,7 +31,7 @@ library(flextable)
 
 ```{r}
 
-HOME <- "Your work directory"
+HOME <- "Insert your own directory"
 setwd(HOME)
 
 ```
@@ -39,7 +39,7 @@ setwd(HOME)
 Create a folder with current date in the Result folder
 ```{r}
 
-newday <- file.path('Your work directory/Results', Sys.Date())
+newday <- file.path('Insert your own directory/Results', Sys.Date())
 dir.create(newday)
 
 ```
@@ -49,7 +49,7 @@ dir.create(newday)
 To knit the file to word or html we need to chande the code below from "./Data/......." to "../Data/........", putting in an extra dot before the /Data.
 ```{r}
 ID <- read_csv2("./Data/Selected_ID.csv") # The IDs in EuroMix selected for the T2/HT2 project
-Consumption <- read_csv2("./Data/Food_consumption_EuroMix_meals_bothdays.csv", locale = locale(encoding = "UTF-8"))
+Consumption <- read_csv2("./Data/Consumption_dummy.csv", locale = locale(encoding = "UTF-8"))
 Occurrence_R <- read_delim("./Data/Results_occurance_T2HT2.csv")
 ```
 
@@ -231,7 +231,7 @@ f_MC_Sim <- function(x,y){
   x$shape <- y$shape[match(x$foodcat, y$foodcat)]
   
   MC <- replicate(1000, x$Amount*
-                    rlnorm(n=148,x$Loc, x$shape), simplify = FALSE)
+                    rlnorm(n=105,x$Loc, x$shape), simplify = FALSE)
   
   df_MC <- as.data.frame(do.call(cbind, MC))
   x <- cbind(x, df_MC)
