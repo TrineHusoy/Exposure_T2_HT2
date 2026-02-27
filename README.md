@@ -1,10 +1,12 @@
-In this project we used the Norwegian EuroMix biomonitoring study for probabilistic external exposure estimates of the mycotoxin T-2 and HT-2 from the diet. The external exposure was be compared with measured T-2 and HT-2 metabolites in the urine through statistical modelling. The results will be published as a part of the publication "Exploring the Relationship between Daily Intake and Renal Excretion of the Mycotoxins T-2 and HT-2 Toxin in Humans", by Hannah P. McKeon, Rudolf Hoogenveen, Marta M. Sopel, Marloes A. A. Schepens, Marcel J. B. Mengelers, Annick D. van den Brand, Judith A. de Heer, Anne Lise Brantseater, Maria Kalyva, Trine Husoy,   which are currently in drafting.
+In this project we used the Norwegian EuroMix biomonitoring study for probabilistic external exposure estimates of the mycotoxin T-2 and HT-2 from the diet. The external exposure was be compared with measured T-2 and HT-2 metabolites in the urine through statistical modelling. 
 
 The EuroMix study is a small (n=144) bionomitoring study performed as a part of the EU funded scientific project *European Test and Risk Assessment Strategies for Mixtures (EuroMix)*. Participants recorded and weighed their food consumption (weighed food record) for a 24h period for two non-consecutive days (2-3 weeks between) in a diary. All urine voids were collected and stored separately and combined into time-pools. You can read more about the Euromix study in Husoy et al. 2019 (https://www.sciencedirect.com/science/article/pii/S0160412019306944?via%3Dihub). 
 
 T-2 toxin (T-2) and HT2 toxin (HT-2) are mycotoxins of the type A trichothecenes. These mycotoxines are produced by fungi of the type Fusarium genera. T-2 and HT-2 are mainly reported to contaminate cereals, especially oats. In Europe, oats and oat products are noted to be the most susceptible commodities to T-2 and HT-2 contamination. Oats grown in Scandinavia have reportedly high concentrations.Please be aware that part of the work on this repository have been provided by Rudolf Hoogenveen at RIVM. This is clearly indicated in the titles below. It's higly appreciated that Rudolf is willing to publish his work on my repository.
 
 # First paper 
+
+The results are published in "Exploring the Relationship between Daily Intake and Renal Excretion of the Mycotoxins T-2 and HT-2 Toxin in Humans", by Hannah P. McKeon, Rudolf Hoogenveen, Marta M. Sopel, Marloes A. A. Schepens, Marcel J. B. Mengelers, Annick D. van den Brand, Judith A. de Heer, Anne Lise Brantseater, Maria Kalyva, Trine Husoy. You can read the paper here (https://pubmed.ncbi.nlm.nih.gov/40306543/).
 
 ## Modelling of T2 and HT2 occurance data (Rudolf)
 
