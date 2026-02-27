@@ -86,7 +86,7 @@ For the development of a PBK model for T-2 and HT-2 we used a population physiol
 The R code to run the PBPK model  
 [T2_HT2_Phase_I_II_run_model.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/T2_HT2_Phase_I_II_run_model.R)  
 
-This is the function files which will be automatically uploaded unto the run file.
+This is the function files which will be automatically uploaded unto the run file.  
 [activity.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/activity.R)  
 [activityreg.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/activityreg.R)  
 [parms_pbk_T2_HT2_Phase_I_II.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/parms_pbk_T2_HT2_Phase_I_II.R)  
@@ -101,5 +101,19 @@ The data that will be used to run the model
 
 The result file with figures  
 [output_T2_HT2_Phase_I_II_2026-02-27.Rdata](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Results/output_T2_HT2_Phase_I_II_2026-02-27.Rdata)  
+
+## Exposure to T-2 and HT-2 toxin from diet with Norwegin concenetration data  
+
+
+
+
+
+
+
+
+
+
+
+
 
 
