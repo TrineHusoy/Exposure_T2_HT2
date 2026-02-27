@@ -83,10 +83,23 @@ For the development of a PBK model for T-2 and HT-2 we used a population physiol
 
 ### Files
 
-The R code to run the PBPK model 
-[T2_HT2_Phase_I_II_run_model.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/T2_HT2_Phase_I_II_run_model.R)
+The R code to run the PBPK model  
+[T2_HT2_Phase_I_II_run_model.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/T2_HT2_Phase_I_II_run_model.R)  
 
+This is the function files which will be automatically uploaded unto the run file.
+[activity.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/activity.R)  
+[activityreg.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/activityreg.R)  
+[parms_pbk_T2_HT2_Phase_I_II.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/parms_pbk_T2_HT2_Phase_I_II.R)  
+[pbk_T2_HT2_Phase_I_II.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/pbk_T2_HT2_Phase_I_II.R)  
+[physB.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/physB.R)   
+[ptisb_T2_HT2.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/ptisb_T2_HT2.R)  
+[utilities.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/functions/utilities.R)  
 
+The data that will be used to run the model  
+[refman_female.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/refman_female.csv)    
+[refman_male.csv](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Data/refman_male.csv)  
 
+The result file with figures  
+[output_T2_HT2_Phase_I_II_2026-02-27.Rdata](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Results/output_T2_HT2_Phase_I_II_2026-02-27.Rdata)  
 
 
