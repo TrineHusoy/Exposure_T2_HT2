@@ -35,7 +35,7 @@ The exposure assessment were performed per meal for 40 participants from the Eur
 
 Individual data from the EuroMix study cannot be openly shared, and we therefore created a Dummy file for the food consumption. The resulting file will be a stochastic rearrangement of the data (including the ID numbers) in the original file, but all data will be maintained. The calculations with these Dummy data will therefore not any longer be done for individuals with high oat consumption. In addition the amounts will not match the right food category, and therefore the exposure from some food categories will not be reasonable. The Dummy file is only added for you to run the code.
 
-###Files
+### Files
 The R code to run the exposure estimate  
 [Exposure_T2_HT2_toGit_131224.Rmd](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/Exposure_T2_HT2_toGit_131224.Rmd)
 
@@ -83,7 +83,8 @@ For the development of a PBK model for T-2 and HT-2 we used a population physiol
 
 ### Files
 
-
+The R code to run the PBPK model 
+[T2_HT2_Phase_I_II_run_model.R](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Code/T2_HT2_Phase_I_II_run_model.R)
 
 
 
