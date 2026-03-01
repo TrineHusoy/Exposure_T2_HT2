@@ -103,7 +103,7 @@ The result file with figures
 [output_T2_HT2_Phase_I_II_2026-02-27.Rdata](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Results/output_T2_HT2_Phase_I_II_2026-02-27.Rdata)  
 
 
-## Exposure to T-2 and HT-2 toxin from diet with Norwegin concenetration data  
+## Exposure to T-2 and HT-2 toxin from diet with Norwegian concenetration data  
 
 This is a updated exposure assessment, where the main difference is that we have used Norwegian occurrence data. These data are frely available from reports published by the NOrwegian food authority. The code is nearly the same, except for some minor changes. We used the same Dummy file for the food consumption as for paper one.
 
