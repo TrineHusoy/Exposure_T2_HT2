@@ -79,7 +79,7 @@ This is the second paper where we want to study the toxicokinetic of T-2 and HT-
 
 ## PBPK model developed by J. Westerhout, PhD (joost.westerhout@rivm.nl)
 
-For the development of a PBK model for T-2 and HT-2 we used a population physiology model, namely, physB (Bosgra et al., 2012), as starting point. In short, the physB model provides a set of differential equations describing the kinetics of a chemical in the human body, in which different compartments represent different organs (i.e., stomach, intestine, liver, kidney, lungs, heart, skin, adipose tissue, muscle, brain, gonads, thymus, spleen, pancreas, bone and remaining tissue), which are connected to the systemic circulation by means of arterial and venous blood compartments. Please see the Appendix A for more details. Furthermore, physB includes the variability in physiological characteristics of the human population, which we used to simulate the physiological variability among our participants.
+For the development of a PBK model for T-2 and HT-2 we used a population physiology model, namely, physB (Bosgra et al., 2012), as starting point. In short, the physB model provides a set of differential equations describing the kinetics of a chemical in the human body, in which different compartments represent different organs (i.e., stomach, intestine, liver, kidney, lungs, heart, skin, adipose tissue, muscle, brain, gonads, thymus, spleen, pancreas, bone and remaining tissue), which are connected to the systemic circulation by means of arterial and venous blood compartments. Furthermore, physB includes the variability in physiological characteristics of the human population, which we used to simulate the physiological variability among our participants.
 
 ### Files
 
@@ -101,6 +101,7 @@ The data that will be used to run the model
 
 The result file with figures  
 [output_T2_HT2_Phase_I_II_2026-02-27.Rdata](https://github.com/TrineHusoy/Exposure_T2_HT2/blob/main/Results/output_T2_HT2_Phase_I_II_2026-02-27.Rdata)  
+
 
 ## Exposure to T-2 and HT-2 toxin from diet with Norwegin concenetration data  
 
